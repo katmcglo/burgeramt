@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import './App.css';
-import Person from './Person/Person';
-import styled from 'styled-components';
+import classes from './App.module.css';
+import Person from '../components/Person/Person';
+import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary';
+import Cockpit from '../components/Cockpit/Cockpit';
+import Persons from '../components/Persons/Persons';
 
 
 class App extends Component {
@@ -46,49 +48,29 @@ class App extends Component {
 
   render() {
     let persons = null;
+    
 
     if (this.state.showPersons) {
       persons = (
-        <div>
-          {this.state.persons.map((person, index) => {
-            return <Person 
-            name={person.name} 
-            age={person.age}
-            click={() => this.deletePersonHandler(index)}
-            key={person.id}
-            changed={(event) => this.nameChangedHandler(event, person.id)}
-            />
-          })}
-        </div>
-      );
+        <Persons
+          persons={this.state.persons}
+          click={this.deletePersonHandler}
+          changed={this.nameChangedHandler}
+        />
+      )
 
-      // style.backgroundColor = 'red';
-      // style[':hover'] = {
-      //   backgroundColor: 'salmon',
-      //   color: 'black'
-      // };
+      
     }
 
-    const classes = [];
-
-    if (this.state.persons.length <= 2) {
-      classes.push('red'); // classes red
-    }
-    if (this.state.persons.length <= 1) {
-      classes.push('bold'); //classes red, bold
-    }
-
+    
     
     return (
-    
-        <div className="App">
-          <h1>Hi, I'm a React App</h1>
-          <p className={classes.join(' ')}>This is really working!</p>
-          <StyledButton
-            meow={this.state.showPersons}  
-            onClick={this.togglePersonsHandler}>
-            Switch Name
-          </StyledButton>
+        <div className={classes.App}>
+          <Cockpit 
+          showPersons={this.state.showPersons}
+          persons={this.state.persons}
+          clicked={this.togglePersonsHandler}
+          />
           {persons} 
         </div>
     
